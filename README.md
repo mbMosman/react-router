@@ -109,3 +109,56 @@ const Animals = ({ match }) => (
     </div>
 );
 ```
+
+## Query Strings
+We can use query strings as well, but it is helpful to bring in another library to help with this.  We will use `query-string` for this.
+
+Without query-string, we can see the search string in the props.location:
+```JavaScript
+class Search extends Component {
+    constructor (props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <div>
+                <h2>Search</h2>
+                <pre>{JSON.stringify(this.props.match)}</pre>
+                <h3>Search String</h3>
+                <pre>{JSON.stringify(this.props.location.search)}</pre>
+            </div>
+        );
+    }
+};
+```
+
+Which for the url `http://localhost:3000/search?legs=1000&type=insect` would show something like:
+```
+Search
+{"path":"/search","url":"/search","isExact":true,"params":{}}
+Search String
+"?legs=1000&type=insect"
+```
+
+By using query-string, we can parse that search string into an object:
+```JavaScript
+    render() {
+        return (
+            <div>
+                <h2>Search</h2>
+                <pre>{JSON.stringify(this.props.match)}</pre>
+                <h3>Search Object using query-string</h3>
+                <pre>{JSON.stringify(qs.parse( this.props.location.search) )}</pre>
+            </div>
+        );
+    }
+```
+
+Which then shows:
+```
+Search
+{"path":"/search","url":"/search","isExact":true,"params":{}}
+Search Object using query-string
+{"legs":"1000","type":"insect"}
+```
